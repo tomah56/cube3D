@@ -6,7 +6,7 @@
 /*   By: ttokesi <ttokesi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 06:25:49 by oipadeol          #+#    #+#             */
-/*   Updated: 2022/04/06 17:42:33 by ttokesi          ###   ########.fr       */
+/*   Updated: 2022/04/10 15:40:47 by ttokesi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,16 +71,27 @@ void	input_rows(int argc, char **argv, t_vars *vars)
 {
 	int		fd;
 	char	*map_row;
+	int		countrow;
+	int		maxlinelength;
 
+	countrow = 0;
 	fd = check_input_get_fd(argc, argv);
 	map_row = get_line(fd);
+	maxlinelength = ft_strlen(map_row);
 	vars->input = add_to_arr(&vars->input, map_row);
 	while (map_row)
 	{
 		map_row = get_line(fd);
 		if (map_row)
+		{
+			if (maxlinelength < ft_strlen(map_row))			// can be faster with a temp but we see
+				maxlinelength = ft_strlen(map_row);
 			vars->input = add_to_arr(&vars->input, map_row);
+		}
+		countrow++;
 	}
+	vars->he_y = countrow;
+	vars->wi_x = maxlinelength;
 	if (vars->input)
 		check_valid(vars->input, vars);
 }

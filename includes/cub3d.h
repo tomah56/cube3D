@@ -6,7 +6,7 @@
 /*   By: ttokesi <ttokesi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 19:02:23 by oipadeol          #+#    #+#             */
-/*   Updated: 2022/04/07 01:05:17 by ttokesi          ###   ########.fr       */
+/*   Updated: 2022/04/12 22:38:19 by ttokesi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_vars
 	void	*win;
 	int		count;
 	char	**map;
+	int		*map2;
 	void	*img;
 	char	start_orientation;
 	char	*addr;
@@ -69,15 +70,30 @@ typedef struct s_vars
 	int		wi_x;
 	int		he_y;
 	int 	sizer;
+
 	float	pa;
 	float	pdx;
 	float	pdy;
-	// char	start_orientation;
 }				t_vars;
+
+
+typedef struct s_rays
+{
+	int r;
+	int mx;
+	int my;
+	int mp;
+	int dof;
+	float rx;
+	float ry;
+	float ra;
+	float xo;
+	float yo;
+}	t_rays;
 
 //utils
 
-void	game_starter(t_vars *game, int lines, int rows);
+void	game_starter(t_vars *game);
 
 //mapmaker
 void	proc_file(int fd);
@@ -103,5 +119,8 @@ void	look_around(int key, t_vars *g);
 void	plotLine(int x0, int y0, int x1, int y1, t_vars *game);
 void	my_mlx_pixel_put(t_vars *game, int x, int y, int color);
 void	render_smallmap(t_vars *g);
+
+// game screen
+void game_screen_maker(t_vars *game);
 
 #endif

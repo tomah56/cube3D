@@ -6,7 +6,7 @@
 /*   By: ttokesi <ttokesi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 13:52:25 by ttokesi           #+#    #+#             */
-/*   Updated: 2022/04/07 00:37:47 by ttokesi          ###   ########.fr       */
+/*   Updated: 2022/04/10 15:45:32 by ttokesi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,59 @@ static void	side_one(t_vars *g, char *temp2, int i, int j)
 	side_two(g, temp2, i, j);
 }
 
+void	feel_map(t_vars *g)
+{
+	int		i;
+	int		j;
+	int		bob;
+
+	i = 0;
+	while (i < g->he_y)
+	{
+		j = 0;
+		bob = 0;
+		while (j < g->wi_x)
+		{
+			if (bob == 0 && g->input[i][j] == '\0')
+				bob = 1;
+			if (bob == 0 && g->input[i][j] == '1')
+				g->map2[i * g->wi_x + j] = 1;
+			else if (bob == 0 && g->input[i][j] != '1')
+				g->map2[i * g->wi_x + j] = 0;
+			else
+				g->map2[i * g->wi_x + j] = 0;
+			j++;
+		}
+		i++;
+	}
+	g->map2[i * g->wi_x + j] = '\0';
+	i = 0;
+	while (i < g->he_y)
+	{
+		j = 0;
+		bob = 0;
+		while (j < g->wi_x)
+		{
+
+			printf("%d", g->map2[i * g->wi_x + j]);
+			j++;
+		}
+		printf("\n");
+		i++;
+	}
+}
+
 void	load_fields(t_vars *g)
 {
 	int		i;
 	int		j;
 
-	g->map = malloc(g->he_y * sizeof(char *));
+	g->map2 = malloc(g->he_y * g->wi_x * sizeof(int) + 1);
+	g->map = malloc(g->he_y * sizeof(char*));
 	if (g->map == NULL)
 		return ;
 	g->map = g->input;
+	feel_map(g);
 	i = 0;
 	j = 0;
 	while (g->input[i] && i < g->he_y)

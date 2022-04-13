@@ -6,26 +6,27 @@
 /*   By: ttokesi <ttokesi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 13:50:50 by ttokesi           #+#    #+#             */
-/*   Updated: 2022/04/07 01:03:09 by ttokesi          ###   ########.fr       */
+/*   Updated: 2022/04/13 00:02:13 by ttokesi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+#define steppp 8 
 
 static int	st_p(t_vars *g, int x, int y)
 {
-	if ((g->map)[y / 6][x / 6] == 'C')
+	if ((g->map)[y / g->sizer][x / g->sizer] == 'C')
 	{
 		(g->collect)--;
-		(g->map)[y / 6][x / 6] = '0';
+		(g->map)[y / g->sizer][x / g->sizer] = '0';
 	}
-	if (g->collect == 0 && (g->map)[y / 6][x / 6] == 'E' && g->enemy > -1)
+	if (g->collect == 0 && (g->map)[y / g->sizer][x / g->sizer] == 'E' && g->enemy > -1)
 	{
 		mlx_put_image_to_window(g->mlx, g->win, g->im[WIN].l,
 			(g->wi_x - 4) * 32 + 1, (g->he_y - 4) * 32 + 1);
 		g->collect = -1;
 	}
-	if ((g->map)[y / 6][x / 6] == '1' || (g->map)[y / 6][x / 6] == 'E')
+	if ((g->map)[y / g->sizer][x / g->sizer] == '1' || (g->map)[y / g->sizer][x / g->sizer] == 'E')
 		return (0);
 	return (1);
 }
@@ -36,15 +37,15 @@ static int	move_up_down(t_vars *g, int key, int r)
 	if (key == 13)
 	{
 		mlx_put_image_to_window(g->mlx, g->win, g->im[FLOOR].l, g->fi_x, g->fi_y);
-		if (g->fi_y > 6 && st_p(g, g->fi_x, g->fi_y - 6))
-			g->fi_y -= 6;
+		if (g->fi_y > g->sizer && st_p(g, g->fi_x, g->fi_y - steppp))
+			g->fi_y -= steppp;
 		mlx_put_image_to_window(g->mlx, g->win, g->im[r].l, g->fi_x, g->fi_y);
 	}
 	if (key == 1)
 	{
 		mlx_put_image_to_window(g->mlx, g->win, g->im[FLOOR].l, g->fi_x, g->fi_y);
-		if (g->fi_y < (g->he_y * 6) - 12 && st_p(g, g->fi_x, g->fi_y + 6))
-			g->fi_y += 6;
+		if (g->fi_y < (g->he_y * g->sizer) - 12 && st_p(g, g->fi_x, g->fi_y + steppp))
+			g->fi_y += steppp;
 		mlx_put_image_to_window(g->mlx, g->win, g->im[FIG1].l, g->fi_x, g->fi_y);
 	}
 	return (0);
@@ -55,15 +56,15 @@ static int	move_right_left(t_vars *g, int key, int r)
 	if (key == 2)
 	{
 		mlx_put_image_to_window(g->mlx, g->win, g->im[4].l, g->fi_x, g->fi_y);
-		if (g->fi_x < (g->wi_x * 6 ) - 12 && st_p(g, g->fi_x + 6, g->fi_y))
-			g->fi_x += 6;
+		if (g->fi_x < (g->wi_x * g->sizer ) - 12 && st_p(g, g->fi_x + steppp, g->fi_y))
+			g->fi_x += steppp;
 		mlx_put_image_to_window(g->mlx, g->win, g->im[r].l, g->fi_x, g->fi_y);
 	}
 	if (key == 0)
 	{
 		mlx_put_image_to_window(g->mlx, g->win, g->im[4].l, g->fi_x, g->fi_y);
-		if (g->fi_x > 6 && st_p(g, g->fi_x - 6, g->fi_y))
-			g->fi_x -= 6;
+		if (g->fi_x > g->sizer && st_p(g, g->fi_x - steppp, g->fi_y))
+			g->fi_x -= steppp;
 		mlx_put_image_to_window(g->mlx, g->win, g->im[r].l, g->fi_x, g->fi_y);
 	}
 	return (0);
@@ -76,7 +77,7 @@ int	key_hook(int keycode, t_vars *g)
 	fignum = 0;
 	if (g->collect > -1)
 	{
-		// if (keycode == 126 || keycode == 125 || keycode == 124
+		// if (keycode == 12g->sizer || keycode == 125 || keycode == 124
 		// 	|| keycode == 123)
 		// 	(g->count)++;
 		// if (keycode == 13 || keycode == 1 || keycode == 2 || keycode == 0)
