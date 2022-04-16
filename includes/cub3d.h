@@ -6,7 +6,7 @@
 /*   By: ttokesi <ttokesi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 19:02:23 by oipadeol          #+#    #+#             */
-/*   Updated: 2022/04/12 22:38:19 by ttokesi          ###   ########.fr       */
+/*   Updated: 2022/04/13 15:32:47 by ttokesi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,10 +117,12 @@ void	ft_error(void);
 // ------ ray --------
 void	look_around(int key, t_vars *g);
 void	plotLine(int x0, int y0, int x1, int y1, t_vars *game);
+void	plotline_color(int x0, int y0, int x1, int y1, t_vars *vars, int color);
 void	my_mlx_pixel_put(t_vars *game, int x, int y, int color);
 void	render_smallmap(t_vars *g);
 
 // game screen
+int		create_rgb(int r, int g, int b);
 void game_screen_maker(t_vars *game);
 
 #endif

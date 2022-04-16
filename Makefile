@@ -6,7 +6,7 @@
 #    By: ttokesi <ttokesi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/16 20:23:06 by oipadeol          #+#    #+#              #
-#    Updated: 2022/04/12 22:44:16 by ttokesi          ###   ########.fr        #
+#    Updated: 2022/04/13 15:30:54 by ttokesi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ SRC_FILES =	main.c get_line/get_line.c input_handling/input_handling.c\
 		input_handling/input_handling_2.c\
 		game_logic/so_game_maker.c game_logic/so_imghadler.c game_logic/so_killer.c\
 		game_logic/so_load_fields.c game_logic/so_mykey_hook.c game_logic/so_mytimer.c\
-		ray_caster/ray_turn.c ray_caster/so_drawline.c ray_caster/game_screen_maker.c\
+		ray_caster/ray_turn.c ray_caster/so_drawline.c ray_caster/plotline.c ray_caster/game_screen_maker.c\
 
 OBJ_FILES = $(SRC_FILES:.c=.o)
 

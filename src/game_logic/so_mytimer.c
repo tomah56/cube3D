@@ -6,7 +6,7 @@
 /*   By: ttokesi <ttokesi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 13:48:49 by ttokesi           #+#    #+#             */
-/*   Updated: 2022/04/07 01:21:20 by ttokesi          ###   ########.fr       */
+/*   Updated: 2022/04/16 21:31:00 by ttokesi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,11 @@ static void	flipper(t_vars *g, int *step, int x, int y)
 static void	enemymaker(t_vars *g, int *step)
 {
 	flipper(g, step, g->bh_x, g->bh_y);
+		g->map2[g->bh_y * g->wi_x / 8 + g->bh_x / 8] = 0;
 	mlx_put_image_to_window(g->mlx, g->win, g->im[FLOOR].l, g->bh_x, g->bh_y);
 	g->bh_x = g->bh_x + step[0];
 	g->bh_y = g->bh_y + step[1];
+	g->map2[g->bh_y * g->wi_x / 8 + g->bh_x / 8] = 8;
 	mlx_put_image_to_window(g->mlx, g->win, g->im[BH1].l, g->bh_x, g->bh_y);
 	flipper(g, step, g->b2_x, g->b2_y);
 	mlx_put_image_to_window(g->mlx, g->win, g->im[FLOOR].l, g->b2_x, g->b2_y);

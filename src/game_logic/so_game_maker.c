@@ -6,7 +6,7 @@
 /*   By: ttokesi <ttokesi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 13:54:13 by ttokesi           #+#    #+#             */
-/*   Updated: 2022/04/12 22:48:01 by ttokesi          ###   ########.fr       */
+/*   Updated: 2022/04/14 22:23:29 by ttokesi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void	game_starter(t_vars *game)
 	game->addr = mlx_get_data_addr(game->img, &game->bits_per_pixel, &game->line_length, &game->endian);
 	my_mlx_pixel_put(game, game->fi_x + 500, game->fi_y + 500, 0x00CCFF66);
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 000, 000);
-
 
 	mlx_hook(game->win, 2, 1L << 2, close1, game);
 	mlx_hook(game->win, 17, 1L << 17, close12, game);

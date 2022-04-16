@@ -6,14 +6,14 @@
 /*   By: ttokesi <ttokesi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 22:02:17 by ttokesi           #+#    #+#             */
-/*   Updated: 2022/04/13 14:51:43 by ttokesi          ###   ########.fr       */
+/*   Updated: 2022/04/16 21:35:00 by ttokesi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
 // #define M_PI 3.1415926
-#define o_rad 0.017453 // one degree step in radian
+#define o_rad 0.001745 // one degree step in radian
 
 void	my_mlx_pixel_put(t_vars *game, int x, int y, int color)
 {
@@ -92,7 +92,7 @@ void ray_maker(t_vars *g)
 	int mapS = mapX * mapY; // size of map
 	int ofset = 8; //size of M_pixel
 
-	ra = g->pa - o_rad * 30;
+	ra = g->pa - o_rad * 300;
 	if (ra < 0)
 		ra += 2 * M_PI;
 	if (ra > 2 * M_PI)
@@ -110,7 +110,7 @@ void ray_maker(t_vars *g)
 	px = g->fi_x;
 	py = g->fi_y;
 	r = 0;
-	while (r < 60)
+	while (r < 600)
 	{
 		// check horizontal lines -----------------------------
 		dof = 0;
@@ -140,7 +140,7 @@ void ray_maker(t_vars *g)
 			mx = (int)(rx) / ofset;
 			my = (int)(ry) / ofset;
 			mp = my * mapX + mx; // what is map x?
-			if (mp > 0 && mp < mapX * mapY && g->map2[mp] == 1)
+			if (mp > 0 && mp < mapX * mapY && (g->map2[mp] == 1 || g->map2[mp] == 8))
 			{
 				dof = g->he_y; // hit wall
 			}
@@ -188,7 +188,7 @@ void ray_maker(t_vars *g)
 			mx = (int)(rx)>>3;
 			my = (int)(ry)>>3;
 			mp = my * mapX + mx; // what is map x?
-			if (mp > 0 && mp < mapX * mapY && g->map2[mp] == 1)
+			if (mp > 0 && mp < mapX * mapY && (g->map2[mp] == 1 || g->map2[mp] == 8))
 			{
 				dof = g->wi_x; // hit wall
 			}
@@ -201,22 +201,58 @@ void ray_maker(t_vars *g)
 		}
 
 		float dist_hor;
-		float dist_ver;
+		float dist;
 		
 		dist_hor = dist_cal(g->fi_x, g->fi_y, rx_horiz, ry_horiz);
-		dist_ver = dist_cal(g->fi_x, g->fi_y, rx, ry);
+		dist = dist_cal(g->fi_x, g->fi_y, rx, ry);
+		int colore;
 
+		colore = create_rgb(1, 2, 240);
 		//------------------
-		if (dist_hor < dist_ver)
+		if (dist_hor < dist)
 		{
 			rx = rx_horiz;
 			ry = ry_horiz;
+			dist = dist_hor;
+			colore = create_rgb(1, 58, 240);
 			// we hit a horizontal wall
 		}
+
 		// int ofset = 0;
 		// printf("bef left\n");
 		// printf("x: %f   y: %f    agle: %f\n", rx, ry, xo);
 		plotLine(g->fi_x, g->fi_y, rx, ry, g);
+
+
+		// -------------- draw 3d screen -------------
+		// fish eye
+		float ca = g->pa - ra;
+		if (ca < 0)
+			ca += 2 * M_PI;
+		if (ca > 2 * M_PI)
+			ca -= 2 * M_PI;
+		dist = dist * cos(ca);
+	
+		float lineight = 16 * 960 / dist;
+		// 16 sets the virtual distance from the wall
+		if (lineight > 960)
+			lineight = 960;
+		float lineof = 480 - lineight / 2; // line offset
+		int i;
+		i = 0;
+		if (mp > 0 && mp < mapX * mapY && g->map2[mp] == 8)
+		{
+			colore = create_rgb(1, 58, 140);
+			// lineight /= 2; 
+
+		}
+		while (i < 3)
+		{
+			plotline_color(r * 3 + 0 + i, lineof, r * 3 + 0 + i, lineof + lineight, g, colore);
+			i++;
+		}
+		//    480 0 shift image in x axis r * N is the widness beetween rays fill up space
+
 		// printf("aft left\n");sssdd
 		ra += o_rad;
 		if (ra < 0)
