@@ -3,18 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   input_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttokesi <ttokesi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: oipadeol <oipadeol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 06:25:49 by oipadeol          #+#    #+#             */
-/*   Updated: 2022/04/10 15:40:47 by ttokesi          ###   ########.fr       */
+/*   Updated: 2022/05/03 13:37:35 by oipadeol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
+static void	init_orient(double	*orient, char start_orientation)
+{
+	if (start_orientation == 'E')
+		*orient = 0;
+	else if (start_orientation == 'S')
+		*orient = M_PI_2;
+	else if (start_orientation == 'W')
+		*orient = M_PI;
+	else if (start_orientation == 'N')
+		*orient = 3 * M_PI_2;
+}
+
 static int	check_input_get_fd(int argc, char **argv)
 {
 	int	fd;
+	int	len;
 
 	if (argc != 2)
 	{
@@ -25,6 +38,9 @@ static int	check_input_get_fd(int argc, char **argv)
 		write(1, "*****************************************\n", 42);
 		exit(1);
 	}
+	len = ft_strlen(argv[1]);
+	if (len < 4 || ft_memcmp(argv[1] + len - 4, ".cub\0", 5))
+		ft_error("Wrong file extension.");
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 	{
@@ -38,7 +54,7 @@ static char	**init_arr(char ***arr, char *s)
 {
 	*arr = malloc(sizeof(char *) * 2);
 	if (*arr == NULL)
-		return (NULL);
+		ft_error("Malloc returned NULL in init_arr");
 	(*arr)[0] = s;
 	(*arr)[1] = NULL;
 	return (*arr);
@@ -56,7 +72,7 @@ static char	**add_to_arr(char ***arr, char *s)
 		i++;
 	temp = malloc(sizeof(char *) * (i + 2));
 	if (!temp)
-		return (NULL);
+		ft_error("Malloc returned NULL in add_to_arr");
 	i = 0;
 	while ((*arr)[i++])
 		temp[i - 1] = (*arr)[i - 1];
@@ -67,31 +83,31 @@ static char	**add_to_arr(char ***arr, char *s)
 	return (*arr);
 }
 
-void	input_rows(int argc, char **argv, t_vars *vars)
+void	input_rows_init_player(int argc, char **argv, t_vars *vars)
 {
 	int		fd;
 	char	*map_row;
-	int		countrow;
-	int		maxlinelength;
+	int		skip;
 
-	countrow = 0;
 	fd = check_input_get_fd(argc, argv);
-	map_row = get_line(fd);
-	maxlinelength = ft_strlen(map_row);
+	map_row = NULL;
+	skip = 20;
+	get_elements(vars, fd);
+	while (skip-- && !map_row)
+		map_row = get_line(fd);
 	vars->input = add_to_arr(&vars->input, map_row);
 	while (map_row)
 	{
 		map_row = get_line(fd);
 		if (map_row)
-		{
-			if (maxlinelength < ft_strlen(map_row))			// can be faster with a temp but we see
-				maxlinelength = ft_strlen(map_row);
 			vars->input = add_to_arr(&vars->input, map_row);
-		}
-		countrow++;
 	}
-	vars->he_y = countrow;
-	vars->wi_x = maxlinelength;
 	if (vars->input)
 		check_valid(vars->input, vars);
+	init_orient(&vars->orient, vars->start_orientation);
+	vars->player_f[0] = vars->player[0];
+	vars->player_f[1] = vars->player[1];
+	vars->player_d[0] = cos(vars->orient);
+	vars->player_d[1] = sin(vars->orient);
+	standardize_input(vars->input, &(vars->map_width));
 }

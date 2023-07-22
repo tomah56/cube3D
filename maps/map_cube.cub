@@ -1,0 +1,13 @@
+NO ./img/simple.xpm
+SO ./img/simple.xpm
+WE ./img/simple.xpm
+EA ./img/simple.xpm
+
+F 0,100,100
+C 0,255,255
+
+11111111111
+10010000001
+100D0000001
+1001D000W01
+11111111111
